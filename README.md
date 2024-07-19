@@ -1,4 +1,4 @@
-# 👋 Hello! I'm Kai Le (愷樂)
+# 👋 Hello! I'm Kai-Le (愷樂)
 
 🎓 I'm currently a second-year master's student majoring in Agricultural Science at Kyoto University, set to graduate in March 2025. Previously, I completed my bachelor's degree in Horticulture at National Taiwan University, graduating at the top of my class.
 
