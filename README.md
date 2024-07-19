@@ -6,7 +6,7 @@
 
 💻 In addition to my agricultural studies, I have a keen interest in IT and technology, aspiring to contribute to the development of new IT technologies and shape the future of the industry. I am fluent in Chinese, English, Japanese, and French, making me confident in international communication.
 
-🎨 Outside of academia, I am passionate about painting, particularly watercolor, and enjoy exploring various artistic mediums, including digital art, oil pastels, and traditional Chinese painting.
+🎨 Outside of academia, I am passionate about painting, particularly digital art, and enjoy exploring various artistic mediums, including watercolor, oil pastels, and traditional Chinese painting.
 
 📚 I am dedicated to continuous learning and personal growth, always eager to take on new challenges and opportunities. Feel free to connect with me to discuss research, technology, or art!
 
