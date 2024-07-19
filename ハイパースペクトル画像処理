@@ -1,3 +1,6 @@
+#I usually run the program at Colab. If you're interested, please check the original version here!
+#https://colab.research.google.com/drive/185MVbFEgLIviV27HwB9O6laViFRyulbT?usp=sharing
+
 from spectral import *
 import cv2
 from matplotlib import pyplot as plt
