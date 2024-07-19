@@ -358,14 +358,17 @@ plt.ylabel("estimated acidity") # y 軸の名前
 plt.legend(["train","test"],bbox_to_anchor=(1.03, 1), loc='upper left', borderaxespad=0, fontsize=14)
 
 
-#<<PLS (Seperated wavelentgh)>>
+
+#<<PLS (exclusive wavelentgh)>>
+
+#減去波長
 
 import pandas as pd
 from sklearn.model_selection import cross_val_predict
 from sklearn.cross_decomposition import PLSRegression
 from sklearn import metrics
 
-dataset = pd.read_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI/酸/HY/HY_full.csv')
+dataset = pd.read_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI/酸/NMT/NMT_full_MSC.csv')
 
 y = dataset.iloc[:, 0]
 
@@ -380,7 +383,7 @@ RPDP = []
 LV = []
 
 # 定义不同区段的起始列和结束列
-regions = [(1, 23), (23, 53), (53, 82), (82, 103), (103, 125), (125, 185), (185, 301), (1, 185), (125, 301), (1, 301)]
+regions = [(23, 301), (1, 23, 53, 301), (1, 53, 82, 301), (1, 82, 103, 301), (1, 103, 125, 301), (1, 125, 185, 301), (1, 185), (1, 301)]
 
 for region in regions:
     x = pd.DataFrame()
@@ -463,5 +466,41 @@ data.columns = ['R2_train', 'MAE_train', 'RMSEC', 'RPDC', 'R2_test', 'MAE_test',
 data.index = index
 
 # 将结果保存到CSV文件中
-data.to_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI/酸/分段PLS/HSI比較測試.csv')
+data.to_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI/酸/減去PLS/NMT_full_MSC.csv')
 data
+
+
+
+#<<Standardized Regression Coefficients (SRC)>>
+
+#先在上面的PLS產生SRC的csv檔，這個程式會產生2張圖，選第2張圖
+
+import pandas as pd
+import os
+import glob
+import numpy as np
+import matplotlib.pyplot as plt
+
+files = glob.glob("/content/drive/MyDrive/京大/colab/文件檔/HSI/糖酸比/HY/rHY_MSC_SRC.csv")
+for file in files:
+    pd.set_option('display.max_rows', 10)
+
+    example1 = pd.read_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI/糖酸比/HY/rHY_MSC_SRC.csv')
+    example1.sort_values(by='standard_regression_coefficients')
+    example1.iloc[:,0]
+
+    z = pd.read_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI/糖酸比/HY/rHY_MSC_SRC.csv', index_col=0)
+
+    z.plot(xlabel='wavelength')
+    plt.xlabel("wavelength(nm)", fontsize=12)
+    plt.ylabel("value", fontsize=12)
+    plt.xticks(np.arange(0, 300, 20))
+
+    plt.title("Hei Ye", fontsize=14)
+    plt.xlabel("wavelength(nm)", fontsize=12)
+    plt.ylabel("value", fontsize=12)
+
+    z.plot.bar()
+    plt.xticks(np.arange(0, 300, 20))
+
+plt.show()
