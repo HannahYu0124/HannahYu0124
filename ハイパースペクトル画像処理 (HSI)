@@ -78,6 +78,5 @@ data1=avr_pixel_val
 index=img.bands.centers
 data= pd.DataFrame(data1,columns=[number+version], index=index)
 
-#存檔
 data.to_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI圖像/HY_csv/H_'+number+version+'.csv')
 data
