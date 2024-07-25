@@ -11,38 +11,39 @@ from skimage import img_as_ubyte
 import os
 import glob
 
-# Update the directory path
-new_directory = '/content/drive/MyDrive/京大/colab/文件檔/HSI圖像/HY'  # 替換成實際的文件夾路徑!!
+# ディレクトリパスを更新
+new_directory = '/content/drive/MyDrive/京大/colab/ファイル/HSI画像/HY'  # 実際のフォルダーのパスに置き換える
 os.chdir(new_directory)
 
-dire_name = "/content/drive/MyDrive/京大/colab/文件檔/HSI圖像/HY"  # 替換成實際的小文件夾路徑!!
+dire_name = "/content/drive/MyDrive/京大/colab/ファイル/HSI画像/HY"  # 実際のサブフォルダーのパスに置き換える
 if os.path.exists(dire_name):
 
-    sample_start = 1  # 替換成樣品開頭數字!!
-    ver = 2  # 替換成後面的數字!!
+    sample_start = 1  # サンプルの開始番号に置き換える
+    ver = 2  # 後ろの番号に置き換える
 
     number = str(sample_start)
     version = '-' + str(ver)
 
-    # 使用 glob 找到特定文件
+    # glob を使って特定のファイルを見つける
     files = glob.glob(dire_name + f"/{sample_start}-{ver}*.bil.hdr")
 
     for file in files:
         print(file)
 
-    # 確保有找到符合條件的文件後再打開影像
+    # 条件に一致するファイルが見つかった場合にのみ画像を開く
     if files:
-        img = open_image(files[0])  # 假設只打開第一個符合條件的文件
+        img = open_image(files[0])  # 条件に一致する最初のファイルを開くと仮定している
         print(img)
         print(img.shape)
     else:
-        print("No matching files found.")
+        print("一致するファイルが見つかりません。")
 else:
-    print("Directory does not exist.")
+    print("ディレクトリが存在しません。")
+
 img_arr =  np.array(img.load())
 img_arr.shape
 view = imshow(img[:,:,:])
-#選擇RGB!!
+
 area = img[:,:]
 img_RGB = get_rgb(area,[240,190,60])
 plt.imshow(img_RGB)
@@ -50,7 +51,6 @@ img_RGB_ubyte = img_as_ubyte(img_RGB)
 img_gray = cv2.cvtColor(img_RGB_ubyte, cv2.COLOR_RGB2GRAY)
 img_blur = cv2.blur(img_gray,(9,9))
 
-#選擇區域!!
 threshold=75
 
 ret, img_binary= cv2.threshold(img_blur, threshold, 255, cv2.THRESH_BINARY)
