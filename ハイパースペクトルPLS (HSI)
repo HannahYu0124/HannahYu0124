@@ -28,16 +28,18 @@ plt.show()
 #<<Big csv>>
 
 import pandas as pd
-# 读取 Excel 文件
-excel_file_path = '/content/drive/MyDrive/京大/colab/文件檔/HSI/糖/HY/sHY_full.xlsx'
+
+# Excel ファイルを読み込む
+excel_file_path = '/content/drive/MyDrive/京大/colab/ファイル/HSI/糖/HY/sHY_full.xlsx'
 df = pd.read_excel(excel_file_path)
 
-# 转置数据
+# データを転置する
 transposed_df = df.T
 
-# 保存为 CSV 文件
-csv_file_path = '/content/drive/MyDrive/京大/colab/文件檔/HSI/糖/HY/sHY_full.csv'
+# CSV ファイルとして保存する
+csv_file_path = '/content/drive/MyDrive/京大/colab/ファイル/HSI/糖/HY/sHY_full.csv'
 transposed_df.to_csv(csv_file_path, header=False, index=False)
+
 df
 
 
@@ -361,7 +363,6 @@ plt.legend(["train","test"],bbox_to_anchor=(1.03, 1), loc='upper left', borderax
 
 #<<PLS (exclusive wavelentgh)>>
 
-#減去波長
 
 import pandas as pd
 from sklearn.model_selection import cross_val_predict
@@ -473,7 +474,6 @@ data
 
 #<<Standardized Regression Coefficients (SRC)>>
 
-#先在上面的PLS產生SRC的csv檔，這個程式會產生2張圖，選第2張圖
 
 import pandas as pd
 import os
