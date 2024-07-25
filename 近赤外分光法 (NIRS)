@@ -7,158 +7,153 @@
 import pandas as pd
 import os
 
-# 假设所有 CSV 文件都在同一个文件夹中 (把_a的都放到資料夾中)
-folder_path = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/果實/5.21'
+# すべての CSV ファイルが同じフォルダーにあると仮定 (すべての _a をフォルダーに置いてください)
+folder_path = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/果実/5.21'
 
-# 第一個range的第一個數字改成第一個樣本號碼(譬如1就寫1，但如果從11開始就打11)；第二個數字改成最後的樣品數+1 (譬如有6個，就改成7)
-# 第二個range改成3個方向+1
+# 最初の range の最初の数字は最初のサンプル番号に変更 (例えば 1 の場合は 1 と記入、11 から始まる場合は 11 と記入)；2 番目の数字は最後のサンプル数 + 1 に変更 (例えば 6 つの場合は 7 に変更)
+# 2 番目の range は 3 つの方向 + 1 に変更
 numbering = []
 for i in range(1, 89):
     for j in range(1, 4):
         numbering.append(f'{i}-{j}')
 
-# 将索引列表排序
+# インデックスリストをソート
 sorted_numbering = sorted(numbering, key=lambda x: (str(x.split('-')[0]), int(x.split('-')[1])))
 
-# 获取文件夹中所有 CSV 文件
+# フォルダー内のすべての CSV ファイルを取得
 csv_files = [file for file in os.listdir(folder_path) if file.endswith('.csv')]
 
-# 创建一个字典来存储所有的列数据
+# すべての列データを保存するための辞書を作成
 data_dict = {}
 
-# 逐个读取每个 CSV 文件，按照规则合并到新 DataFrame 中
+# 各 CSV ファイルを順番に読み込み、規則に従って新しい DataFrame にマージ
 for index in sorted_numbering:
     for file_name in csv_files:
         if index in file_name:
             file_path = os.path.join(folder_path, file_name)
-            # 读取 CSV 文件
+            # CSV ファイルを読み込み
             df = pd.read_csv(file_path)
-            # 提取第二列以后的数据，并设置为新 DataFrame 的一列，列名为文件名
+            # 2 列目以降のデータを抽出し、新しい DataFrame の列として設定、列名はファイル名
             absorbance_column = df.iloc[:, 1]
             data_dict[index] = absorbance_column
             break
 
-# 将所有数据合并到一个 DataFrame 中
+# すべてのデータを 1 つの DataFrame にマージ
 merged_df = pd.DataFrame(data_dict)
 
-# 插入 Wavelength (nm) 列
+# Wavelength (nm) 列を挿入
 merged_df.insert(0, 'Wavelength (nm)', df.iloc[:, 0])
 
-# 将合并后的 DataFrame 写入新的 CSV 文件
-new_file_path = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/果實/5.21/肉1-44.csv'
+# マージした DataFrame を新しい CSV ファイルに書き込む
+new_file_path = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/果実/5.21/肉1-44.csv'
 merged_df.to_csv(new_file_path, index=False)
-new_file_path_1 = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/果實/5.21/肉1-44.csv'
+new_file_path_1 = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/果実/5.21/肉1-44.xlsx'
 merged_df.to_excel(new_file_path_1, index=False)
 
 merged_df
 
 
-
-#單個數字 沒有1-1等 之這個數字
-
 import pandas as pd
 import os
 
-# 假设所有 CSV 文件都在同一个文件夹中
-folder_path = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/果實/5.21'
+# すべての CSV ファイルが同じフォルダーにあると仮定
+folder_path = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/果実/5.21'
 
-# 第一個range的第一個數字改成第一個樣本號碼(譬如1就寫1，但如果從11開始就打11)；第二個數字改成最後的樣品數+1 (譬如有44個，就改成45)
+# 最初の range の最初の数字は最初のサンプル番号に変更 (例えば 1 の場合は 1 と記入、11 から始まる場合は 11 と記入)；2 番目の数字は最後のサンプル数 + 1 に変更 (例えば 44 個の場合は 45 に変更)
 numbering = list(range(1, 89))
 
-# 将索引列表排序
+# インデックスリストをソート
 sorted_numbering = sorted(numbering)
 
-# 获取文件夹中所有 CSV 文件
+# フォルダー内のすべての CSV ファイルを取得
 csv_files = [file for file in os.listdir(folder_path) if file.endswith('.csv')]
 
-# 创建一个字典来存储所有的列数据
+# すべての列データを保存するための辞書を作成
 data_dict = {}
 
-# 逐个读取每个 CSV 文件，按照规则合并到新 DataFrame 中
+# 各 CSV ファイルを順番に読み込み、規則に従って新しい DataFrame にマージ
 for number in sorted_numbering:
     for file_name in csv_files:
         if f'{number}' in file_name:
             file_path = os.path.join(folder_path, file_name)
-            # 读取 CSV 文件
+            # CSV ファイルを読み込み
             df = pd.read_csv(file_path)
-            # 提取第二列以后的数据，并设置为新 DataFrame 的一列，列名为文件名
+            # 2 列目以降のデータを抽出し、新しい DataFrame の列として設定、列名はファイル名
             absorbance_column = df.iloc[:, 1]
             data_dict[number] = absorbance_column
             break
 
-# 将所有数据合并到一个 DataFrame 中
+# すべてのデータを 1 つの DataFrame にマージ
 merged_df = pd.DataFrame(data_dict)
 
-# 插入 Wavelength (nm) 列
+# Wavelength (nm) 列を挿入
 merged_df.insert(0, 'Wavelength (nm)', df.iloc[:, 0])
 
-# 将合并后的 DataFrame 写入新的 CSV 文件
-new_file_path_csv = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/果實/5.21/肉1-88.csv'
+# マージした DataFrame を新しい CSV ファイルに書き込む
+new_file_path_csv = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/果実/5.21/肉1-88.csv'
 merged_df.to_csv(new_file_path_csv, index=False)
 
-new_file_path_excel = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/果實/5.21/肉1-88.xlsx'
+new_file_path_excel = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/果実/5.21/肉1-88.xlsx'
 merged_df.to_excel(new_file_path_excel, index=False)
 
-# 顯示合併後的 DataFrame
+# マージした DataFrame を表示
 merged_df
 
 
 #<<Big csv>>
 
-# 导入pandas库
+# pandas ライブラリのインポート
 import pandas as pd
 
-# 读取 Excel 文件
-excel_file_path = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/肉1-88.xlsx'
+# Excel ファイルを読み込み
+excel_file_path = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/糖/肉1-88.xlsx'
 df = pd.read_excel(excel_file_path)
 
-# 选择第一列
+# 最初の列を選択
 first_column = df.iloc[:, 0]
 
-# 选择列名中包含-1、-2、-3 的列
+# 列名に -1、-2、-3 が含まれる列を選択
 columns_with_minus = df.filter(regex='-1|-2|-3', axis=1)
 
-# 创建新的DataFrame，包括第一列和符合条件的列
+# 新しい DataFrame を作成、最初の列と条件に一致する列を含む
 new_df = pd.concat([first_column, columns_with_minus], axis=1)
 
-# 保存为 CSV 文件
-csv_output_path = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/肉1-44.csv'
+# CSV ファイルとして保存
+csv_output_path = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/糖/肉1-44.csv'
 new_df.to_csv(csv_output_path, header=False, index=False)
 
-# 转置数据并保存为 CSV 文件
+# データを転置して CSV ファイルとして保存
 new_df.T.to_csv(csv_output_path, header=False, index=False)
 
-# 打印 DataFrame
+# DataFrame を表示
 new_df
 
 
-#單個數字 沒有1-1等 之這個數字
-
-# 导入pandas库
+# pandas ライブラリのインポート
 import pandas as pd
 
-# 读取 Excel 文件
-excel_file_path = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/肉1-88.xlsx'
+# Excel ファイルを読み込み
+excel_file_path = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/糖/肉1-88.xlsx'
 df = pd.read_excel(excel_file_path)
 
-# 选择第一列
+# 最初の列を選択
 first_column = df.iloc[:, 0]
 
-# 选择列名中包含數字的列
-# 假设列名是字符串，包含數字的形式如 "1", "2", "3" 等
+# 列名に数字を含む列を選択
+# 列名が文字列で、数字のみの形式（"1"、"2"、"3" など）を含むと仮定
 columns_with_numbers = df.filter(regex='^[0-9]+$', axis=1)
 
-# 创建新的DataFrame，包括第一列和符合条件的列
+# 新しい DataFrame を作成、最初の列と条件に一致する列を含む
 new_df = pd.concat([first_column, columns_with_numbers], axis=1)
 
-# 保存为 CSV 文件
-csv_output_path = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/肉1-88.csv'
+# CSV ファイルとして保存
+csv_output_path = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/糖/肉1-88.csv'
 new_df.to_csv(csv_output_path, header=False, index=False)
 
-# 转置数据并保存为 CSV 文件
+# データを転置して CSV ファイルとして保存
 new_df.T.to_csv(csv_output_path, header=False, index=False)
 
-# 打印 DataFrame
+# DataFrame を表示
 new_df
 
 
@@ -553,20 +548,20 @@ LV = pd.DataFrame(LV)
 
 index = []
 
-# 创建索引以标识每个区段
+# 各セグメントを識別するためのインデックスを作成
 for region in regions:
     indexx = ""
     for i in range(0, len(region), 2):
         start_wavelength = dataset.columns[region[i]]
         end_wavelength = dataset.columns[region[i + 1] - 1]
         indexx += start_wavelength + '~' + end_wavelength + ", "
-    index.append(indexx[:-2])  # 删除最后的逗号和空格
+    index.append(indexx[:-2])  # 最後のカンマとスペースを削除
 
 data = pd.concat([r2value_train, MAE_train, RMSEC, RPDC, r2value_test, MAE_test, RMSEP, RPDP, LV], axis=1)
 data.columns = ['R2_train', 'MAE_train', 'RMSEC', 'RPDC', 'R2_test', 'MAE_test', 'RMSEP', 'RPDP', 'LV']
 data.index = index
 
-# 将结果保存到CSV文件中
-output_csv_path = '/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/分段PLS/肉1-88_SG2.csv'
+# 結果をCSVファイルとして保存
+output_csv_path = '/content/drive/MyDrive/京大/colab/ファイル/NIRS/test/糖/分段PLS/肉1-88_SG2.csv'
 data.to_csv(output_csv_path)
 data
