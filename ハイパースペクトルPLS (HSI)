@@ -138,7 +138,6 @@ new=df.columns[1:]
 test=pd.DataFrame(Xsnv, columns=new)
 test
 
-#這邊根據不同factor改
 #new_data=pd.Series(df.loc[:,'Acidity'])
 new_data=pd.Series(df.loc[:,'Brix/acid ratio'])
 
@@ -147,10 +146,8 @@ new_data
 test.insert(0, 'Brix/acid ratio', new_data)
 test
 
-#這邊記得改
 test.to_csv("/content/drive/MyDrive/京大/colab/文件檔/HSI/糖酸比/YHP/rYHP_full_SNV.csv", index=False)
 
-#波型表示圖
 columns=df.columns[1:]
 fig = plt.figure(figsize=(12,24))
 with plt.style.context(('classic')):   #'ggplot'
@@ -182,7 +179,6 @@ x= pd.read_csv("/content/drive/MyDrive/京大/colab/文件檔/HSI/糖酸比/YHP/
 ax =x.iloc[:,1:]
 df = np.array(ax)
 
-#改deriv那邊(0, 1, 2)
 data1=[]
 for n in range(len(x)):
     n=0+n
@@ -207,21 +203,15 @@ fx.to_csv("/content/drive/MyDrive/京大/colab/文件檔/HSI/糖酸比/YHP/rYHP_
 import pandas as pd # pandas のインポート
 import numpy as np
 
-#改檔案位置!
 dataset= pd.read_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI/酸/HY/HY_full_MSC.csv') # データセットの読み込み #改csv來源
 
 #dataset=df.sample(frac=0.1,random_state=99)
 dataset.shape  # データセットのサンプル数、特徴量の数の確認
 dataset # 念のため確認
 
-#改波長 (可分段)!!!
 #x1 = dataset.iloc[:, 1:23]
 #x2 = dataset.iloc[:, 53:301]
 #x = pd.concat([x1, x2], axis=1)
-
-#原本的
-x = dataset.iloc[:,1:] # スペクトルの特徴量を説明変数 x とする。およそ770nm〜の波長を抽出
-y = dataset.iloc[:,0] # APIを目的変数 y とします
 
 from sklearn.model_selection import train_test_split # ランダムにトレーニングデータとテストデータとに分割。
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, shuffle=True, random_state=99)
@@ -267,7 +257,7 @@ standard_regression_coefficients.index = ['standard_regression_coefficients'] # 
 standard_regression_coefficients =standard_regression_coefficients.T
 standard_regression_coefficients
 
-#SRC的csv製作
+#SRCのcsv製作
 standard_regression_coefficients.to_csv ('/content/drive/MyDrive/京大/colab/文件檔/HSI/酸/HY/HY_MSC_SRC.csv')
 standard_regression_coefficients.sort_values(by='standard_regression_coefficients', ascending=False)
 
@@ -288,18 +278,15 @@ plt.scatter(y_train, estimated_y_train.iloc[:, 0]) # 散布図。estimated_y_tra
 #y_min = min(y_train.min(), estimated_y_train.iloc[:, 0].min()) # 実測値の最小値と、推定値の最小値の中で、より小さい値を取得
 plt.scatter(y_train, estimated_y_train.iloc[:, 0], color="cornflowerblue")
 
-#更改對角線數值 改(0, 1)那幾個就好
 plt.plot([0, 1], [0, 1], 'k-')
 plt.yticks(np.arange(0, 1.1, 0.3))
 plt.ylim(0, 1)
 plt.xticks(np.arange(0, 1.1, 0.3))
 plt.xlim(0, 1)
 
-#更改數值(圖刻度的數字)
 plt.xticks([0, 0.3, 0.6, 0.9])
 plt.yticks([0, 0.3, 0.6, 0.9])
 
-#更改名稱
 plt.xlabel("actual acidity")
 plt.ylabel("estimated acidity")
 plt.title('training set')
@@ -322,18 +309,15 @@ plt.scatter(y_test, estimated_y_test.iloc[:, 0]) # 散布図。estimated_y_train
 #y_min = min(y_train.min(), estimated_y_train.iloc[:, 0].min()) # 実測値の最小値と、推定値の最小値の中で、より小さい値を取得
 plt.scatter(y_test, estimated_y_test.iloc[:, 0], color="cornflowerblue")
 
-#更改對角線數值 改(0, 1)那幾個就好
 plt.plot([0, 1], [0, 1], 'k-')
 plt.yticks(np.arange(0, 1.1, 0.3))
 plt.ylim(0, 1)
 plt.xticks(np.arange(0, 1.1, 0.3))
 plt.xlim(0, 1)
 
-#更改數值(圖刻度的數字)
 plt.xticks([0, 0.3, 0.6, 0.9])
 plt.yticks([0, 0.3, 0.6, 0.9])
 
-#更改名稱
 plt.xlabel("actual acidity")
 plt.ylabel("estimated acidity")
 plt.title('test set')
@@ -347,14 +331,12 @@ plt.figure(figsize=figure.figaspect(1)) # 図の形を正方形に
 plt.scatter(y_train, estimated_y_train.iloc[:, 0],marker = "o")
 plt.scatter(y_test, estimated_y_test.iloc[:, 0],marker = "v")
 
-#更改對角線數值 除改(0, 1)對角線，(0, 1.1, 0.3) 中間改最大數字，第三個改刻度值
 plt.plot([0,1],[0,1], 'k-')
 plt.yticks(np.arange(0, 1.1, 0.3))
 plt.ylim(0, 1) # y 軸の範囲の設定
 plt.xticks(np.arange(0, 1.1, 0.3))
 plt.xlim(0, 1) # x 軸の範囲の設定
 
-#更改名稱
 plt.xlabel("actual acidity") # x 軸の名前
 plt.ylabel("estimated acidity") # y 軸の名前
 plt.legend(["train","test"],bbox_to_anchor=(1.03, 1), loc='upper left', borderaxespad=0, fontsize=14)
@@ -460,13 +442,12 @@ for region in regions:
         start_wavelength = dataset.columns[region[i]]
         end_wavelength = dataset.columns[region[i + 1] - 1]
         indexx += start_wavelength + '~' + end_wavelength + ", "
-    index.append(indexx[:-2])  # 删除最后的逗号和空格
+    index.append(indexx[:-2]) 
 
 data = pd.concat([r2value_train, MAE_train, RMSEC, RPDC, r2value_test, MAE_test, RMSEP, RPDP, LV], axis=1)
 data.columns = ['R2_train', 'MAE_train', 'RMSEC', 'RPDC', 'R2_test', 'MAE_test', 'RMSEP', 'RPDP', 'LV']
 data.index = index
 
-# 将结果保存到CSV文件中
 data.to_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI/酸/減去PLS/NMT_full_MSC.csv')
 data
 
