@@ -295,38 +295,41 @@ fx.to_csv("/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/肉1-88_S
 
 #<<PLS>>
 
-#酸度
+# 酸度
 
 import pandas as pd # pandas のインポート
 import numpy as np
 
-dataset= pd.read_csv('/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/表11-38.csv') # データセットの読み込み #改csv來源
+# ファイルの場所を変更!
+dataset= pd.read_csv('/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/酸/表11-38.csv') # データセットの読み込み # CSV ソースを変更
 
-#dataset=df.sample(frac=0.1,random_state=99)
-dataset.shape  # データセットのサンプル数、特徴量の数の確認
+# dataset=df.sample(frac=0.1,random_state=99)
+dataset.shape  # データセットのサンプル数と特徴量の数を確認
 dataset # 念のため確認
 
+# 波長を変更 (分割可能) !!!
 x1 = dataset.iloc[:, 1:23]
 x2 = dataset.iloc[:, 53:301]
 x = pd.concat([x1, x2], axis=1)
 
-#x = dataset.iloc[:,1:] # スペクトルの特徴量を説明変数 x とする。およそ770nm〜の波長を抽出
+# 元のもの
+# x = dataset.iloc[:,1:] # スペクトルの特徴量を説明変数 x とする。およそ770nm〜の波長を抽出
 y = dataset.iloc[:,0] # APIを目的変数 y とします
 
-from sklearn.model_selection import train_test_split # ランダムにトレーニングデータとテストデータとに分割。
+from sklearn.model_selection import train_test_split # ランダムにトレーニングデータとテストデータに分割
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, shuffle=True, random_state=99)
 autoscaled_x_train = (x_train - x_train.mean()) / x_train.std() # トレーニングデータの説明変数の標準化。平均を引いてから、標準偏差で割ります
 autoscaled_x_test = (x_test - x_train.mean()) / x_train.std() # テストデータの説明変数の標準化には、トレーニングデータの平均と標準偏差を用いることに注意してください
 autoscaled_y_train = (y_train - y_train.mean()) / y_train.std() # トレーニングデータの目的変数の標準化
 from sklearn.model_selection import cross_val_predict # クロスバリデーションにより推定値を計算するために使用
 from sklearn.cross_decomposition import PLSRegression # PLS モデル構築やモデルを用いた y の値の推定に使用
-from sklearn import metrics # r2 等の指標の計算に使用
+from sklearn import metrics # r2 などの指標の計算に使用
 
 max_number_of_components = 20  # 主成分の数
 fold_number = 10 # クロスバリデーションのfold数
 
-components = [] # 空の list を作成して、主成分数をこの変数に追加
-r2_in_cv_all = [] # 空の list を作成して、主成分数ごとのクロスバリデーション後の r2 をこの list に追加
+components = [] # 空のリストを作成し、主成分数をこの変数に追加
+r2_in_cv_all = [] # 空のリストを作成し、主成分数ごとのクロスバリデーション後の r2 をこのリストに追加
 
 for component in range(1, max_number_of_components+1):
     model = PLSRegression(n_components=component) # PLS モデルの宣言
@@ -357,8 +360,8 @@ standard_regression_coefficients.index = ['standard_regression_coefficients'] # 
 standard_regression_coefficients =standard_regression_coefficients.T
 standard_regression_coefficients
 
-#SRC的csv製作
-#standard_regression_coefficients.to_csv ('/content/drive/MyDrive/京大/colab/文件檔/HSI/酸/HY/HY_SRC_full_d.csv')
+# SRCのCSV作成
+#standard_regression_coefficients.to_csv('/content/drive/MyDrive/京大/colab/文件檔/HSI/酸/HY/HY_SRC_full_d.csv')
 standard_regression_coefficients.sort_values(by='standard_regression_coefficients', ascending=False)
 
 wavelength_S=x.columns[0]
@@ -368,25 +371,28 @@ estimated_y_train = pd.DataFrame(model.predict(autoscaled_x_train)) # 推定し�
 estimated_y_train = estimated_y_train * y_train.std() + y_train.mean() # スケールをもとに戻します
 estimated_y_train.index = x_train.index # サンプル名を、元のデータのサンプル名に
 estimated_y_train.columns = ['estimated_y'] # 列名を変更
-estimated_y_train # 念のため確認 #estimated_y_train.to_csv('estimated_y_train_pls.csv') # csv ファイルに保存。同じ名前のファイルがあるときは上書きされますので注意してください
+estimated_y_train # 念のため確認 #estimated_y_train.to_csv('estimated_y_train_pls.csv') # CSV ファイルに保存。同じ名前のファイルがあるときは上書きされますので注意してください
 import matplotlib.pyplot as plt
 import matplotlib.figure as figure # 図の調整に使用
 plt.rcParams['font.size'] = 16.5 # 横軸や縦軸の名前の文字などのフォントのサイズ
 plt.figure(figsize=figure.figaspect(1)) # 図の形を正方形に
 plt.scatter(y_train, estimated_y_train.iloc[:, 0]) # 散布図。estimated_y_train は 200×1 の行列のため、0 列目を選択する必要があります
-#y_max = max(y_train.max(), estimated_y_train.iloc[:, 0].max()) # 実測値の最大値と、推定値の最大値の中で、より大きい値を取得
-#y_min = min(y_train.min(), estimated_y_train.iloc[:, 0].min()) # 実測値の最小値と、推定値の最小値の中で、より小さい値を取得
+# y_max = max(y_train.max(), estimated_y_train.iloc[:, 0].max()) # 実測値の最大値と推定値の最大値の中で、より大きい値を取得
+# y_min = min(y_train.min(), estimated_y_train.iloc[:, 0].min()) # 実測値の最小値と推定値の最小値の中で、より小さい値を取得
 plt.scatter(y_train, estimated_y_train.iloc[:, 0], color="cornflowerblue")
 
+# 対角線の数値変更 (0, 1) のみ変更
 plt.plot([0, 1], [0, 1], 'k-')
 plt.yticks(np.arange(0, 1.1, 0.3))
 plt.ylim(0, 1)
 plt.xticks(np.arange(0, 1.1, 0.3))
 plt.xlim(0, 1)
 
+# 数値の変更 (グラフの刻度の数字)
 plt.xticks([0, 0.3, 0.6, 0.9])
 plt.yticks([0, 0.3, 0.6, 0.9])
 
+# 名前の変更
 plt.xlabel("actual acidity")
 plt.ylabel("estimated acidity")
 plt.title('training set')
@@ -394,53 +400,57 @@ plt.show()
 
 from sklearn import metrics
 metrics.r2_score(y_train, estimated_y_train) # r2
-metrics.mean_squared_error(y_train,estimated_y_train,squared=False) #RMSE
+metrics.mean_squared_error(y_train, estimated_y_train, squared=False) # RMSE
 metrics.mean_absolute_error(y_train, estimated_y_train) # MAE
 estimated_y_test = pd.DataFrame(model.predict(autoscaled_x_test)) # 推定して、pandas の DataFrame 型に変換
 estimated_y_test = estimated_y_test * y_train.std() + y_train.mean() # スケールをもとに戻します
 estimated_y_test.index = x_test.index # サンプル名を、元のデータのサンプル名に
 estimated_y_test.columns = ['estimated_y'] # 列名を変更
-estimated_y_test # 念のため確
-#estimated_y_test.to_csv('estimated_y_test_pls.csv') # csv ファイルに保存。同じ名前のファイルがあるときは上書きされますので注意してください
+estimated_y_test # 念のため確認
+# estimated_y_test.to_csv('estimated_y_test_pls.csv') # CSV ファイルに保存。同じ名前のファイルがあるときは上書きされますので注意してください
 plt.rcParams['font.size'] = 16.5 # 横軸や縦軸の名前の文字などのフォントのサイズ
 plt.figure(figsize=figure.figaspect(1)) # 図の形を正方形に
 plt.scatter(y_test, estimated_y_test.iloc[:, 0]) # 散布図。estimated_y_train は 200×1 の行列のため、0 列目を選択する必要があります
-#y_max = max(y_train.max(), estimated_y_train.iloc[:, 0].max()) # 実測値の最大値と、推定値の最大値の中で、より大きい値を取得
-#y_min = min(y_train.min(), estimated_y_train.iloc[:, 0].min()) # 実測値の最小値と、推定値の最小値の中で、より小さい値を取得
+# y_max = max(y_train.max(), estimated_y_train.iloc[:, 0].max()) # 実測値の最大値と推定値の最大値の中で、より大きい値を取得
+# y_min = min(y_train.min(), estimated_y_train.iloc[:, 0].min()) # 実測値の最小値と推定値の最小値の中で、より小さい値を取得
 plt.scatter(y_test, estimated_y_test.iloc[:, 0], color="cornflowerblue")
 
+# 対角線の数値変更 (0, 1) のみ変更
 plt.plot([0, 1], [0, 1], 'k-')
 plt.yticks(np.arange(0, 1.1, 0.3))
 plt.ylim(0, 1)
 plt.xticks(np.arange(0, 1.1, 0.3))
 plt.xlim(0, 1)
 
+# 数値の変更 (グラフの刻度の数字)
 plt.xticks([0, 0.3, 0.6, 0.9])
 plt.yticks([0, 0.3, 0.6, 0.9])
 
-plt.xlabel("actual acidity")
-plt.ylabel("estimated acidity")
+# 名前の変更
+plt.xlabel("actual acidity") # x 軸の名前
+plt.ylabel("estimated acidity") # y 軸の名前
 plt.title('test set')
 plt.show()
 
 metrics.r2_score(y_test, estimated_y_test) # r2
-metrics.mean_squared_error(y_test,estimated_y_test,squared=False) #RMSE
+metrics.mean_squared_error(y_test, estimated_y_test, squared=False) # RMSE
 metrics.mean_absolute_error(y_test, estimated_y_test) # MAE
 plt.rcParams['font.size'] = 16.5 # 横軸や縦軸の名前の文字などのフォントのサイズ
 plt.figure(figsize=figure.figaspect(1)) # 図の形を正方形に
-plt.scatter(y_train, estimated_y_train.iloc[:, 0],marker = "o")
-plt.scatter(y_test, estimated_y_test.iloc[:, 0],marker = "v")
+plt.scatter(y_train, estimated_y_train.iloc[:, 0], marker = "o")
+plt.scatter(y_test, estimated_y_test.iloc[:, 0], marker = "v")
 
+# 対角線の数値変更 (0, 1) のみ変更
 plt.plot([0,1],[0,1], 'k-')
 plt.yticks(np.arange(0, 1.1, 0.3))
 plt.ylim(0, 1) # y 軸の範囲の設定
 plt.xticks(np.arange(0, 1.1, 0.3))
 plt.xlim(0, 1) # x 軸の範囲の設定
 
+# 名前の変更
 plt.xlabel("actual acidity") # x 軸の名前
 plt.ylabel("estimated acidity") # y 軸の名前
-plt.legend(["train","test"],bbox_to_anchor=(1.03, 1), loc='upper left', borderaxespad=0, fontsize=14)
-
+plt.legend(["train","test"], bbox_to_anchor=(1.03, 1), loc='upper left', borderaxespad=0, fontsize=14)
 
 
 #<<PLS (sperated wavelength)>>
