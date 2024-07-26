@@ -252,16 +252,13 @@ new=df.columns[1:]
 test=pd.DataFrame(Xsnv, columns=new)
 test
 
-#改
 #new_data=pd.Series(df.loc[:,'Acidity'])
 #new_data=pd.Series(df.loc[:,'Brix/acid ratio'])
 new_data=pd.Series(df.loc[:,'Brix'])
 
-#改
 test.insert(0, 'Brix', new_data)
 test
 
-#這邊記得改
 test.to_csv("/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/肉1-88_SNV.csv", index=False)
 
 
@@ -303,19 +300,16 @@ fx.to_csv("/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/肉1-88_S
 import pandas as pd # pandas のインポート
 import numpy as np
 
-#改檔案位置!
 dataset= pd.read_csv('/content/drive/MyDrive/京大/colab/文件檔/NIRS/test/糖/表11-38.csv') # データセットの読み込み #改csv來源
 
 #dataset=df.sample(frac=0.1,random_state=99)
 dataset.shape  # データセットのサンプル数、特徴量の数の確認
 dataset # 念のため確認
 
-#改波長 (可分段)!!!
 x1 = dataset.iloc[:, 1:23]
 x2 = dataset.iloc[:, 53:301]
 x = pd.concat([x1, x2], axis=1)
 
-#原本的
 #x = dataset.iloc[:,1:] # スペクトルの特徴量を説明変数 x とする。およそ770nm〜の波長を抽出
 y = dataset.iloc[:,0] # APIを目的変数 y とします
 
@@ -384,18 +378,15 @@ plt.scatter(y_train, estimated_y_train.iloc[:, 0]) # 散布図。estimated_y_tra
 #y_min = min(y_train.min(), estimated_y_train.iloc[:, 0].min()) # 実測値の最小値と、推定値の最小値の中で、より小さい値を取得
 plt.scatter(y_train, estimated_y_train.iloc[:, 0], color="cornflowerblue")
 
-#更改對角線數值 改(0, 1)那幾個就好
 plt.plot([0, 1], [0, 1], 'k-')
 plt.yticks(np.arange(0, 1.1, 0.3))
 plt.ylim(0, 1)
 plt.xticks(np.arange(0, 1.1, 0.3))
 plt.xlim(0, 1)
 
-#更改數值(圖刻度的數字)
 plt.xticks([0, 0.3, 0.6, 0.9])
 plt.yticks([0, 0.3, 0.6, 0.9])
 
-#更改名稱
 plt.xlabel("actual acidity")
 plt.ylabel("estimated acidity")
 plt.title('training set')
@@ -418,18 +409,15 @@ plt.scatter(y_test, estimated_y_test.iloc[:, 0]) # 散布図。estimated_y_train
 #y_min = min(y_train.min(), estimated_y_train.iloc[:, 0].min()) # 実測値の最小値と、推定値の最小値の中で、より小さい値を取得
 plt.scatter(y_test, estimated_y_test.iloc[:, 0], color="cornflowerblue")
 
-#更改對角線數值 改(0, 1)那幾個就好
 plt.plot([0, 1], [0, 1], 'k-')
 plt.yticks(np.arange(0, 1.1, 0.3))
 plt.ylim(0, 1)
 plt.xticks(np.arange(0, 1.1, 0.3))
 plt.xlim(0, 1)
 
-#更改數值(圖刻度的數字)
 plt.xticks([0, 0.3, 0.6, 0.9])
 plt.yticks([0, 0.3, 0.6, 0.9])
 
-#更改名稱
 plt.xlabel("actual acidity")
 plt.ylabel("estimated acidity")
 plt.title('test set')
@@ -443,14 +431,12 @@ plt.figure(figsize=figure.figaspect(1)) # 図の形を正方形に
 plt.scatter(y_train, estimated_y_train.iloc[:, 0],marker = "o")
 plt.scatter(y_test, estimated_y_test.iloc[:, 0],marker = "v")
 
-#更改對角線數值 除改(0, 1)對角線，(0, 1.1, 0.3) 中間改最大數字，第三個改刻度值
 plt.plot([0,1],[0,1], 'k-')
 plt.yticks(np.arange(0, 1.1, 0.3))
 plt.ylim(0, 1) # y 軸の範囲の設定
 plt.xticks(np.arange(0, 1.1, 0.3))
 plt.xlim(0, 1) # x 軸の範囲の設定
 
-#更改名稱
 plt.xlabel("actual acidity") # x 軸の名前
 plt.ylabel("estimated acidity") # y 軸の名前
 plt.legend(["train","test"],bbox_to_anchor=(1.03, 1), loc='upper left', borderaxespad=0, fontsize=14)
@@ -478,7 +464,6 @@ RPDC = []
 RPDP = []
 LV = []
 
-# 定义不同区段的起始列和结束列 注意：确保结束列不超过数据集列的大小
 #229=1700, 212=1649
 regions = [(1, 53),(1, 107),(1, 165),(1, 229),(53, 107),(53, 165),(53, 229),(107, 165),(107, 229),(165, 229)]
 
