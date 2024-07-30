@@ -365,7 +365,6 @@ RPDC = []
 RPDP = []
 LV = []
 
-# 定义不同区段的起始列和结束列
 regions = [(23, 301), (1, 23, 53, 301), (1, 53, 82, 301), (1, 82, 103, 301), (1, 103, 125, 301), (1, 125, 185, 301), (1, 185), (1, 301)]
 
 for region in regions:
@@ -435,7 +434,6 @@ LV = pd.DataFrame(LV)
 
 index = []
 
-# 创建索引以标识每个区段
 for region in regions:
     indexx = ""
     for i in range(0, len(region), 2):
