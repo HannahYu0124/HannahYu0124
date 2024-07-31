@@ -453,7 +453,7 @@ plt.ylabel("estimated acidity") # y 軸の名前
 plt.legend(["train","test"], bbox_to_anchor=(1.03, 1), loc='upper left', borderaxespad=0, fontsize=14)
 
 
-#<<PLS (sperated wavelength)>>
+#<<PLS (seperated wavelength)>>
 
 import pandas as pd
 from sklearn.model_selection import cross_val_predict, train_test_split
